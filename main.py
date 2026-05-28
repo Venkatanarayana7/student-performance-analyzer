@@ -1,5 +1,7 @@
 from analyzer.loader import load_students
 from analyzer.stats import compute_basic_stats, get_campus_summary
+from analyzer.visualizer import plot_campus_comparision, plot_gender_distribution, plot_gpa_distribution
+
 
 # 1. Load data
 students = load_students("data/rgukt_23batch_branch_data.csv")
@@ -25,3 +27,9 @@ print("\nCAMPUS-WISE SUMMARY")
 print("-" * 60)
 for campus, info in campus_summary.items():
     print(f"{campus:12} | Students: {info['count']:4d} | Avg PUC GPA: {info['avg_puc_gpa']:.2f} | Max: {info['max_puc_gpa']:.2f} | Min: {info['min_puc_gpa']:.2f}")
+
+# 4. Generate and save charts
+print("\nGENERATING CHARTS...")
+plot_gpa_distribution(students)
+plot_campus_comparision(students)
+plot_gender_distribution(students)
