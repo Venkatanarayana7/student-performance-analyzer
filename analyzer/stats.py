@@ -34,7 +34,47 @@ class StudentAnalyzer:
             .round(3) * 100   # convert to precentage (0-100)
         )   
 
-    
-        
+    def estimate_rank(self, campus, puc_gpa):
+        """
+        Given a campus name and a PUC GPA, estimate the rank, percentile,
+        and tier that GPA would correspond to, based on the N23 batch data.
+        """
 
+        # Step 1: keep only rows from teh requested campus
+        campus_df = self.df[self.df['Campus'] == campus]
+
+        # Step 2: count how many students scored higher than the input GPA
+        higher_count = (campus_df['PUC_GPA'] > puc_gpa).sum()
+        estimated_rank = higher_count + 1
+
+        # Step 3: total students in that campus
+        total = len(campus_df)
+
+        # step 4: percentile : fraction of students with GPA <= input
+        percentile = round((campus_df['PUC_GPA'] <= puc_gpa).sum() / total * 100, 1)
+
+        # step 5: determine the tire using the same bins we use everywhere
+        tier = pd.cut(
+            [puc_gpa],
+            bins=self.TIER_BINS,
+            labels=self.TIER_LABELS,
+            right=False
+        )[0]
+
+        # Step 6: build a human-readable summary
+        interpretation = (
+            f"A PUC GPA of {puc_gpa} at {campus} would place a student "
+            f"approximately at rank {estimated_rank} out of {total},"
+            f"in the top {round(100 - percentile, 1)}% - Tier: {tier}."
+        )
+        
+        return {
+            'campus': campus,
+            'input_gpa': puc_gpa,
+            'estimated_rank': estimated_rank,
+            'total_in_campus': total,
+            'percentile': percentile,
+            'tier': str(tier),
+            'interpretation': interpretation
+        }
 
