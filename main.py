@@ -1,5 +1,6 @@
 from analyzer.loader import DataLoader
 from analyzer.stats import StudentAnalyzer
+from analyzer.visualizer import Visualizer
 
 # 1. Load data
 loader = DataLoader("data/rgukt_23batch_branch_data.csv")
@@ -16,4 +17,10 @@ analyzer = StudentAnalyzer(df)
 #print(analyzer.df['Tier'].value_counts())
 
 # Test estimate_rank
-print(analyzer.estimate_rank('RK_Valley', 8.0)['interpretation']) 
+# print(analyzer.estimate_rank('Nuzvid', 9.2)['interpretation']) 
+
+viz = Visualizer(analyzer.df)
+viz.plot_gpa_distribution()
+viz.plot_campus_boxplot()
+viz.plot_correlation_heatmap()
+viz.plot_tier_distribution()
