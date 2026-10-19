@@ -2,12 +2,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-
 class Visualizer:
     """
     Generates charts from the student DataFrame and saves them to disk.
     """
-
     def __init__(self, df, output_dir='outputs/charts'):
         self.df = df
         self.output_dir = output_dir
