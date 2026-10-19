@@ -6,7 +6,7 @@ class StudentAnalyzer:
     and provides methods for statistics and rank estimation.
     """
 
-    # The boundaries for our tiers, defiend once here for easy changes
+    # The boundaries for our tiers, defined once here for easy changes
     TIER_BINS = [0, 7.0, 8.0, 9.0, 9.5, 10.01] # 10.01 to include 10.0
     TIER_LABELS = ['Below Average', 'Average', 'Strong', 'High', 'Elite']
 
@@ -23,15 +23,15 @@ class StudentAnalyzer:
             self.df['PUC_GPA'],
             bins = self.TIER_BINS,
             labels = self.TIER_LABELS,
-            right = False  # left edge inclusive: 9.0 goes to 'String', 9.5 to 'High'
+            right = False  # left edge inclusive: 9.0 goes to 'Strong', 9.5 to 'High'
         )
 
     def _add_percentile_column(self):
-        """Calculate the percentile ran within each campus."""
+        """Calculate the percentile rank within each campus."""
         self.df['Campus_Percentile'] = (
             self.df.groupby('Campus')['PUC_GPA']
             .rank(pct=True)   # returns fraction ( 0 to 1)
-            .round(3) * 100   # convert to precentage (0-100)
+            .round(3) * 100   # convert to percentage (0-100)
         )   
 
     def estimate_rank(self, campus, puc_gpa):

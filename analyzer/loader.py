@@ -14,7 +14,7 @@ class DataLoader:
         required = {'Campus', 'Student_ID', 'Rank', 'Maths_GPA', 'Physics_GPA', 'Chem_GPA', 'PUC_GPA', 'Gender'}
         missing  = required - set(self.df.columns)
         if missing:
-            raise ValueError(f"Missing columns is CSV: {missing}")
+            raise ValueError(f"Missing columns in CSV: {missing}")
 
         for col in ['Maths_GPA', 'Physics_GPA', 'Chem_GPA', 'PUC_GPA']:
             invalid = self.df[(self.df[col] < 0) | (self.df[col] > 10)]
